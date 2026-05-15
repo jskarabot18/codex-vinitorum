@@ -522,7 +522,13 @@ function renderAtlas() {
     const lat = w.lat + Math.sin(angle) * r;
     const lng = w.lng + Math.cos(angle) * r;
     const m = L.marker([lat, lng], { icon: pinIcon() })
-      .bindPopup(popupContent(w), { maxWidth: 340 });
+      .bindPopup(popupContent(w), {
+        maxWidth: 340,
+        maxHeight: 380,
+        autoPan: true,
+        autoPanPadding: [40, 60],
+        keepInView: true
+      });
     m._wmId = w.id;
     markerLayer.addLayer(m);
   });
