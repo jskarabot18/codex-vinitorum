@@ -79,8 +79,8 @@
   .book-table .col-country { color: var(--ink-muted); white-space: nowrap; }
   .book-table .col-met { color: var(--ink-muted); font-family: 'Cormorant Garamond', Georgia, serif; white-space: nowrap; }
   .book-table .col-signals { white-space: nowrap; }
-  .book-table .col-signal { text-align: center; white-space: nowrap; width: 1px; padding-left: 16px; padding-right: 16px; }
-  .book-table th.col-signal-header { text-align: center; font-size: 12px; letter-spacing: 0.04em; }
+  .book-table .col-signal { text-align: center; white-space: nowrap; padding-left: 8px; padding-right: 8px; }
+  .book-table th.col-signal-header { text-align: center; font-size: 13px; letter-spacing: 0.03em; padding-left: 8px; padding-right: 8px; }
   .book-table .col-signal .fleuron { font-size: 18px; }
   .fleurons { display: inline-flex; gap: 3px; align-items: baseline; }
   .fleuron { color: var(--wine-light); font-size: 16px; cursor: help; position: relative; }
@@ -207,9 +207,9 @@
             <th data-sort="region">Region <span class="sort-indicator"></span></th>
             <th data-sort="country">Country <span class="sort-indicator"></span></th>
             <th data-sort="met">Met <span class="sort-indicator"></span></th>
-            <th class="col-signal-header" data-sort="felt_close_to">Felt close to <span class="sort-indicator"></span></th>
-            <th class="col-signal-header" data-sort="memorable_encounter">Memorable encounter <span class="sort-indicator"></span></th>
-            <th class="col-signal-header" data-sort="stayed_with_me">Stayed with me <span class="sort-indicator"></span></th>
+            <th class="col-signal-header" data-sort="felt_close_to" title="Felt close to">Close <span class="sort-indicator"></span></th>
+            <th class="col-signal-header" data-sort="memorable_encounter" title="Memorable encounter">Memorable <span class="sort-indicator"></span></th>
+            <th class="col-signal-header" data-sort="stayed_with_me" title="Stayed with me">Stayed <span class="sort-indicator"></span></th>
           </tr>
         </thead>
         <tbody id="book-tbody"></tbody>
