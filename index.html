@@ -476,7 +476,7 @@ function updateCounts() {
 
 // --- Atlas ------------------------------------------------------------------
 function initMap() {
-  map = L.map("atlas-map", { scrollWheelZoom: false, zoomControl: true }).setView([42, 12], 4);
+  map = L.map("atlas-map", { scrollWheelZoom: true, zoomControl: true }).setView([42, 12], 4);
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
     attribution: "&copy; <a href='https://carto.com'>CARTO</a> &copy; OpenStreetMap contributors",
     subdomains: "abcd",
