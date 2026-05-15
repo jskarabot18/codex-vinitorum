@@ -79,6 +79,9 @@
   .book-table .col-country { color: var(--ink-muted); white-space: nowrap; }
   .book-table .col-met { color: var(--ink-muted); font-family: 'Cormorant Garamond', Georgia, serif; white-space: nowrap; }
   .book-table .col-signals { white-space: nowrap; }
+  .book-table .col-signal { text-align: center; white-space: nowrap; width: 1px; padding-left: 16px; padding-right: 16px; }
+  .book-table th.col-signal-header { text-align: center; font-size: 12px; letter-spacing: 0.04em; }
+  .book-table .col-signal .fleuron { font-size: 18px; }
   .fleurons { display: inline-flex; gap: 3px; align-items: baseline; }
   .fleuron { color: var(--wine-light); font-size: 16px; cursor: help; position: relative; }
   .fleuron[data-tooltip]:hover::after { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--paper-raised); font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 12px; padding: 4px 9px; border-radius: 3px; white-space: nowrap; margin-bottom: 6px; letter-spacing: 0.02em; pointer-events: none; z-index: 50; }
@@ -204,7 +207,9 @@
             <th data-sort="region">Region <span class="sort-indicator"></span></th>
             <th data-sort="country">Country <span class="sort-indicator"></span></th>
             <th data-sort="met">Met <span class="sort-indicator"></span></th>
-            <th>Signals</th>
+            <th class="col-signal-header" data-sort="felt_close_to">Felt close to <span class="sort-indicator"></span></th>
+            <th class="col-signal-header" data-sort="memorable_encounter">Memorable encounter <span class="sort-indicator"></span></th>
+            <th class="col-signal-header" data-sort="stayed_with_me">Stayed with me <span class="sort-indicator"></span></th>
           </tr>
         </thead>
         <tbody id="book-tbody"></tbody>
@@ -322,7 +327,7 @@ async function loadData() {
     winemakers = await res.json();
     init();
   } catch (e) {
-    document.getElementById("book-tbody").innerHTML = `<tr class="empty-row"><td colspan="6">Unable to load winemakers.json. Run from a local server or GitHub Pages, or open codex-vinitorum-preview.html for an embedded version.</td></tr>`;
+    document.getElementById("book-tbody").innerHTML = `<tr class="empty-row"><td colspan="8">Unable to load winemakers.json. Run from a local server or GitHub Pages, or open codex-vinitorum-preview.html for an embedded version.</td></tr>`;
   }
 }
 
@@ -393,6 +398,14 @@ function sortAndRender() {
       case "region": av = a.region; bv = b.region; break;
       case "country": av = a.country; bv = b.country; break;
       case "met": av = a.date_met || ""; bv = b.date_met || ""; break;
+      case "felt_close_to":
+      case "memorable_encounter":
+      case "stayed_with_me":
+        // Sort entries with the signal first (true = 1 > false = 0), tiebreak by name
+        av = a[sortField] ? 1 : 0;
+        bv = b[sortField] ? 1 : 0;
+        if (av !== bv) return (bv - av) * sortDir;
+        return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
       default: av = a.name; bv = b.name;
     }
     if (av < bv) return -1 * sortDir;
@@ -406,7 +419,7 @@ function sortAndRender() {
 function renderBook() {
   const tbody = document.getElementById("book-tbody");
   if (filteredWinemakers.length === 0) {
-    tbody.innerHTML = `<tr class="empty-row"><td colspan="6">No winemakers match the current filters.</td></tr>`;
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="8">No winemakers match the current filters.</td></tr>`;
     return;
   }
   tbody.innerHTML = filteredWinemakers.map(w => `
@@ -416,7 +429,9 @@ function renderBook() {
       <td class="col-region">${w.region}</td>
       <td class="col-country">${w.country}</td>
       <td class="col-met">${formatYear(w.date_met)}</td>
-      <td class="col-signals"><span class="fleurons">${fleuronsHTML(w)}</span></td>
+      <td class="col-signal">${w.felt_close_to ? '<span class="fleuron" data-tooltip="Felt close to">❧</span>' : ''}</td>
+      <td class="col-signal">${w.memorable_encounter ? '<span class="fleuron" data-tooltip="Memorable encounter">❧</span>' : ''}</td>
+      <td class="col-signal">${w.stayed_with_me ? '<span class="fleuron" data-tooltip="Stayed with me">❧</span>' : ''}</td>
     </tr>
   `).join("");
   // Hook up row click → fly map
